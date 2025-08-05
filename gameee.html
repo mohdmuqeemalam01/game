@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Falling Button Game</title>
+  <!-- <link rel="stylesheet" href="style.css" /> -->
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: cornflowerblue;
+      font-family: sans-serif;
+      overflow: hidden;/
+    }
+
+    #score {
+      text-align: center;
+      font-size: 30px;
+      padding: 10px;
+      color: white;
+    }
+
+    .main {
+      position: relative;
+      height: 100vh;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    button {
+      position: absolute;
+      height: 60px;
+      width: 60px;
+      border-radius: 50%;
+      border: none;
+      font-size: 30px;
+      background-color: rgb(33, 163, 44);
+      color: white;
+      cursor: pointer;
+      animation: fall 5s linear forwards;
+    }
+
+    @media  screen and (max-widht:570px){
+
+      button {
+      position: absolute;
+      height: 30px;
+      width: 30px;
+      border-radius: 50%;
+      border: none;
+      font-size: 15px;
+      background-color: rgb(33, 163, 44);
+      color: white;
+      }
+
+    }
+      
+    
+
+    @keyframes fall {
+      0% {
+        top: -60px;
+      }
+
+      100% {
+        top: 100vh;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="score">Score: <span id="score1">0</span></div>
+  <div class="main" id="gameArea"></div>
+
+  <audio id="myAudio" src="sound.mp3"></audio>
+
+  <script>
+    const gameArea = document.getElementById("gameArea");
+    const scoreDisplay = document.getElementById("score1");
+    const audio = document.getElementById("myAudio");
+
+    let score = 0;
+
+    // Function to create a falling button
+    function createFallingButton() {
+      const button = document.createElement("button");
+      const num = Math.floor((Math.random() * 10) + 1)
+      const bottonCol = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+
+      button.textContent = num;
+
+
+      // Random horizontal position
+      button.style.left = Math.random() * (window.innerWidth - 60) + "px";
+      //random color
+      button.style.background = bottonCol;
+
+      // Random animation duration
+      const duration = Math.random() * 3 + 3; // Between 3s and 6s
+      button.style.animationDuration = duration + "s";
+
+      gameArea.appendChild(button);
+
+      // Remove button after falling
+      setTimeout(() => {
+        if (gameArea.contains(button)) {
+          gameArea.removeChild(button);
+        }
+      }, duration * 1000);
+
+      // Click event
+      button.addEventListener("click", () => {
+        let mk = (button.textContent);
+        const voic = new Audio(`${mk}.mp3`);
+        voic.play();
+
+        console.log(voic)
+        score++;
+        scoreDisplay.textContent = score;
+        button.remove();
+
+        // audio.currentTime = 0;
+
+
+      });
+      button.addEventListener('keydown',(button)=>{
+          let mk = (button.textContent);
+        const voic = new Audio(`${mk}.mp3`);
+        voic.play();
+
+        console.log(voic)
+        score++;
+        scoreDisplay.textContent = score;
+      button.remove();
+      console.log("ker")
+
+      })
+
+    }
+
+    // Spawn buttons every 1 second
+    setInterval(createFallingButton, 1000);
+
+  </script>
+</body>
+
+</html>
